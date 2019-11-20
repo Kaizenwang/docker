@@ -8,8 +8,6 @@ services:
     volumes:
       - "./grafana/data:/var/lib/grafana"
     restart: always
-
-▽
     user: root
     networks:
       monitor-network:
