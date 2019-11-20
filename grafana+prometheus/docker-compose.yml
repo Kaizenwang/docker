@@ -1,0 +1,35 @@
+version: '3'
+services:
+  grafana:
+    container_name: grafana
+    image: "grafana/grafana:6.4.3"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./grafana/data:/var/lib/grafana"
+    restart: always
+
+▽
+    user: root
+    networks:
+      monitor-network:
+        aliases:
+          - grafana
+  prometheus:
+    container_name: prometheus
+    image: "prom/prometheus:v2.13.1"
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus:/prometheus-data"
+    restart: always
+    user: root
+    command:
+      - '--config.file=/prometheus-data/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus-data/data'
+    networks:
+      monitor-network:
+        aliases:
+          - prometheus
+networks:
+  monitor-network:
